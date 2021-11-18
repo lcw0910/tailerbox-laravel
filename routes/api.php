@@ -20,3 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('user', UserController::class);
+
+Route::get('/environment', function () {
+    return [
+        'env.timezone' => env('TIMEZONE'),
+        'php.timezone' => date_default_timezone_get(),
+        'datetime' => date('Y-m-d H:i:s'),
+    ];
+});

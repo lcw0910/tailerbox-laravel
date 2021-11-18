@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -34,7 +35,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /*$request->validate([
+            'name'
+        ]);*/
+
+        $data = $request->all();
+        $rules = [
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'test' => 'required',
+        ];
+        // __($key = null, $replace = [], $locale = null)
+        $messages = [
+            'test.required' => __('validation.required', [], 'ko'),
+        ];
+//        $request->validate($rules);
+        $validator = Validator::make($data, $rules, $messages);
+        if ($validator->fails()) {
+            $messageBag = $validator->getMessageBag();
+            $messages = $messageBag->all();
+        }
+
+        return response(['foo' => 'bar'], 201);
     }
 
     /**
