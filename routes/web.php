@@ -17,9 +17,3 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/box1', function () {
-    return 'this is web route box1';
-});
-
-Route::apiResource('user', UserController::class);

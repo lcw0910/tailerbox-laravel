@@ -20,7 +20,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('user', UserController::class);
-
-//Route::get('/box1', function () {
-//    return 'this is api box1';
-//});
