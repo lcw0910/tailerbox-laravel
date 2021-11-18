@@ -10,6 +10,10 @@
       ```
       ```php
       // app/Providers/RouteServiceProvider
+    
+          use Illuminate\Support\Facades\Request as FacadeRequest;
+          //...
+          //...
           $this->routes(function () {
               // prefix를 통한 api route 식별
               /*Route::prefix('api')
