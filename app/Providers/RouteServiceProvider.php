@@ -6,7 +6,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
@@ -45,17 +44,21 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));*/
 
-            if (FacadeRequest::server('HTTP_HOST') === env('API_DOMAIN')) {
-                # 도메인 기반의 api route 식별 방식으로 변경
-                Route::domain(env('API_DOMAIN'))
-                    ->middleware('api')
-                    ->namespace($this->namespace)
-                    ->group(base_path('routes/api.php'));
-            } elseif (FacadeRequest::server('HTTP_HOST') === env('WEB_DOMAIN')) {
-                Route::middleware('web')
-                    ->namespace($this->namespace)
-                    ->group(base_path('routes/web.php'));
-            }
+            # 도메인 기반의 api route 식별 방식으로 변경
+            Route::domain(env('API_DOMAIN'))
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
+
+            /*Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));*/
+
+            # API Domain 과의 URI가 중복되는 경우 Override 되는 것을 방지하기 위해 Web Route 에도 도메인을 추가
+            Route::domain(env('WEB_DOMAIN'))
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
         });
     }
 
